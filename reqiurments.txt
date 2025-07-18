@@ -1,0 +1,10 @@
+streamlit
+google-generativeai
+gTTS
+pytesseract
+Pillow
+python-dotenv
+langchain
+langchain-google-genai
+langchain-core
+gdown
