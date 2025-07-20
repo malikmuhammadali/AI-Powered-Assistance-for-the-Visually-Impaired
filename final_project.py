@@ -11,10 +11,10 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 import base64
+import requests  # for OCR.Space API
 
 
-# Path to the Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = r"D:\data\tesseract\tesseract.exe"
+
 
 load_dotenv()
 api_key = "AIzaSyCc3DsTqV344OfE7co6LmY0LnN2nLsw2tc"
@@ -40,10 +40,21 @@ output_parser = StrOutputParser()
 chain = chat_prompt_template | chat_model | output_parser
 
 # Function to extract text using Pytesseract
+# OCR using OCR.Space API
+OCR_SPACE_API_KEY = st.secrets["OCR_API_KEY"]  # Replace with your own key for more usage
+
 def extract_text(image_path):
-    image = Image.open(image_path)
-    text = pytesseract.image_to_string(image)
-    return text
+    with open(image_path, 'rb') as f:
+        response = requests.post(
+            'https://api.ocr.space/parse/image',
+            files={'filename': f},
+            data={'apikey': OCR_SPACE_API_KEY, 'language': 'eng'}
+        )
+    result = response.json()
+    if result.get("IsErroredOnProcessing"):
+        return "Error: OCR failed. Try a clearer image."
+    return result['ParsedResults'][0]['ParsedText']
+
 
 # Function to convert text to speech
 def text_to_speech(text):
