@@ -41,7 +41,7 @@ chain = chat_prompt_template | chat_model | output_parser
 
 # Function to extract text using Pytesseract
 # OCR using OCR.Space API
-OCR_SPACE_API_KEY = st.secrets["OCR_API_KEY"]  # Replace with your own key for more usage
+OCR_SPACE_API_KEY = 'AIzaSyCc3DsTqV344OfE7co6LmY0LnN2nLsw2tc'  # Replace with your own key for more usage
 
 def extract_text(image_path):
     with open(image_path, 'rb') as f:
