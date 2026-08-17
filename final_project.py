@@ -17,7 +17,9 @@ import requests  # for OCR.Space API
 
 
 load_dotenv()
-api_key = "AIzaSyCc3DsTqV344OfE7co6LmY0LnN2nLsw2tc"
+api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    raise RuntimeError("Set GEMINI_API_KEY in your .env file (see .env.example).")
 genai.configure(api_key=api_key)
 
 # Defining system instructions
@@ -41,7 +43,7 @@ chain = chat_prompt_template | chat_model | output_parser
 
 # Function to extract text using Pytesseract
 # OCR using OCR.Space API
-OCR_SPACE_API_KEY = 'AIzaSyCc3DsTqV344OfE7co6LmY0LnN2nLsw2tc'  # Replace with your own key for more usage
+OCR_SPACE_API_KEY = os.getenv("OCR_SPACE_API_KEY", "helloworld")  # "helloworld" is OCR.Space's public demo key (rate-limited) -- set your own in .env for real usage
 
 def extract_text(image_path):
     with open(image_path, 'rb') as f:
